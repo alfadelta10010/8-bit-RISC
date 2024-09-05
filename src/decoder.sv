@@ -1,8 +1,8 @@
-module decoder(instIn, opcode, rs1, rs2, fn);
+module decoder(instIn, rs1, rs2, fn, imm);
   input logic [7:0] instIn;
   output logic [1:0] rs1;
   output logic [1:0] rs2;
-  output logic [2:0] opcode;
+  logic [2:0] opcode;
   output logic [0:0] fn;
   output logic [3:0] imm;
   always_comb
