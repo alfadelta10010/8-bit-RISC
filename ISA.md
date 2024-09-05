@@ -1,4 +1,4 @@
-# Instruction Set Architecture v1.1
+# Instruction Set Architecture v1.3
 
 - The ISA which the three of us decided upon when we were hungry. Absolutely nothing can go wrong :)
 
