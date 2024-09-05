@@ -1,10 +1,10 @@
 module alu(rs1, rs2, ctrl, out, overflow)
-  input logic [7:0] rs1, rs2;
-  input logic [2:0] ctrl;
-  output logic [7:0] out;
-  logic [7:0] a_temp, b_temp;
-  logic [0:0] cin;
-  logic [0:0] overflow;
+  input wire [7:0] rs1, rs2;
+  input wire [2:0] ctrl;
+  output reg [7:0] out;
+  reg [7:0] a_temp, b_temp;
+  reg [0:0] cin;
+  reg [0:0] overflow;
   adder_8 adder (
     .cin(cin), 
     .A(a_temp), 
