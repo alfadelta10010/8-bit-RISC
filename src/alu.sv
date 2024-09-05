@@ -1,48 +1,49 @@
-`timescale 1ns / 1ps
-
-module alu(
-           input [7:0] InReg1, InReg2,
-           input [2:0] CtrlSig,
-           input Flag,
-           output [7:0] OutReg
-           );
-           
-logic Carry;
-logic [7:0] Inv;
-assign Inv = ~InReg2 + 8'b00000001;
-adder_8 add_sub_instance (
-    .OutReg(OutReg),
-    .Carry(Carry),
-    .A(A),
-    .B(B)
-);
-always @(*) 
-begin
-    if (CtrlSig == 3'b000 )
-        if (Flag == 1)
-            OutReg = ~(InReg1 & InReg2);  // NAND
-        else 
-            OutReg = ~(InReg1 | InReg2);  // NOR
-    else if (CtrlSig == 3'b011)
+module alu(rs1, rs2, ctrl, out, overflow)
+  input logic [7:0] rs1, rs2;
+  input logic [2:0] ctrl;
+  output logic [7:0] out;
+  logic [7:0] a_temp, b_temp;
+  logic [0:0] cin;
+  logic [0:0] overflow;
+  adder_8 adder (
+    .cin(cin), 
+    .A(a_temp), 
+    .B(b_temp),
+    .S(out), 
+    .Cout(overflow)
+  );
+  
+  /*
+  000 - Add
+  001 - Sub
+  010 - SRL
+  011 - NOR
+  100 - NAND
+  110 - SLL
+  */
+  
+  always_comb 
     begin
-        if (Flag == 1)
-        begin
-            A = InReg1;
-            B = InReg2;     // Add 
-        end 
-        else 
-        begin
-            A = InReg1;
-            B = Inv;  
-        end      // Sub
+      case(ctrl)
+        3'b000: 
+          begin 
+            a_temp = rs1;
+            b_temp = rs2;
+            cin = 1'b0;
+          end
+        3'b001: 
+          begin 
+            a_temp = rs1;
+            b_temp = ~rs2;
+            cin = 1'b1;
+          end
+        3'b010: //SRL
+          waga waga;
+        3'b011: out = ~(rs1 | rs2);
+        3'b100: out = ~(rs1 & rs2);
+        3'b011: //SLL
+          waga waga;
+        default: out = 7'bX;
+      endcase
     end
-    else if (CtrlSig == 3'b100)
-        if (Flag == 1)
-            OutReg = InReg1 >> InReg2;    // SRL
-        else
-            OutReg = InReg1 << InReg2;    //SLL
-    else 
-        OutReg = 8'b00000000;
-end
-
 endmodule
