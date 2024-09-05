@@ -58,7 +58,7 @@ module decoder(instIn, rs1, rs2, fn, imm);
             rs2 = {instIn[5], instIn[7]};
             imm = 4'bX;
           end
-        3'b111: // Jump + New Inst
+        3'b111: // Jump + Move
           begin
             fn = instIn[3:0];
             if(instIn[3] == 1'b1) 
