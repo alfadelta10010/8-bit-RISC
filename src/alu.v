@@ -1,4 +1,26 @@
 `timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 06.09.2024 00:33:30
+// Design Name: 
+// Module Name: ALU
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+`timescale 1ns / 1ps
 
 module alu(
   input wire [7:0] rs1, rs2,
@@ -20,17 +42,15 @@ module alu(
     .Cout(add_overflow)
   );
 
-  always @(*) begin
+   always @(*) begin
     case(ctrl)
       3'b000: 
-        begin 
-          a_temp = rs1;
-          b_temp = rs2;
-          cin = 1'b0; 
-          out = add_out;
-          overflow = add_overflow;
-        end
-      3'b001: 
+        if (Flag == 1)
+            OutReg = ~(InReg1 & InReg2);  // NAND
+        else 
+            OutReg = ~(InReg1 | InReg2);  // NOR
+      3'b011: 
+        if (Flag == 1)
         begin 
           a_temp = rs1;
           b_temp = ~rs2;
@@ -38,32 +58,29 @@ module alu(
           out = add_out;
           overflow = add_overflow;
         end
-      3'b010: 
-        begin
-          out = rs1 >> rs2[2:0]; 
-          overflow = 1'b0; 
-        end
-      3'b011: 
-        begin
-          out = ~(rs1 | rs2);
-          overflow = 1'b0;
+        else begin
+          a_temp = rs1;
+          b_temp = rs2;
+          cin = 1'b0; 
+          out = add_out;
+          overflow = add_overflow;
         end
       3'b100: 
+        if (Flag == 1) 
         begin
-          out = ~(rs1 & rs2); 
+          out = rs1 << rs2[2:0]; 
+          overflow = 1'b0; 
+        end
+        else 
+        begin
+          out = rs1 >> rs2[2:0];
           overflow = 1'b0;
         end
-      3'b110: 
-        begin
-          out = rs1 << rs2[2:0];
-          overflow = 1'b0;
-        end
-      default: 
+        default: 
         begin
           out = 8'bX;
           overflow = 1'bX;
         end
-    endcase
-  end
-
+      endcase
+   end
 endmodule
