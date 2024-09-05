@@ -13,15 +13,6 @@ module alu(rs1, rs2, ctrl, out, overflow)
     .Cout(overflow)
   );
   
-  /*
-  000 - Add
-  001 - Sub
-  010 - SRL
-  011 - NOR
-  100 - NAND
-  110 - SLL
-  */
-  
   always_comb 
     begin
       case(ctrl)
@@ -37,12 +28,12 @@ module alu(rs1, rs2, ctrl, out, overflow)
             b_temp = ~rs2;
             cin = 1'b1;
           end
-        3'b010: //SRL
-          waga waga;
+        3'b010:
+          out = rs1 >> rs2[2:0];
         3'b011: out = ~(rs1 | rs2);
         3'b100: out = ~(rs1 & rs2);
-        3'b011: //SLL
-          waga waga;
+        3'b011:
+          out = rs1 << rs2[2:0];
         default: out = 7'bX;
       endcase
     end
