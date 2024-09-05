@@ -69,9 +69,9 @@ module decoder(instIn, rs1, rs2, fn, imm);
               end
             else
               begin
-                // New instruction - undefined
-                rs1 = 2'bX;
-                rs2 = 2'bX;
+                // Move
+                rs1 = {instIn[4], instIn[6]};
+                rs2 = {instIn[5], instIn[7]};
                 imm = 4'bX;
               end
           end

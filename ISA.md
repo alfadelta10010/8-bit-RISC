@@ -15,4 +15,4 @@
 |r2|r1|I|m|m|1|0|1|Branch BEQ|
 |r2|r1|I|m|m|1|1|0|Store|
 |I|m|m|e|0|1|1|1|Jump|
-|X|X|X|X|1|1|1|1|Undefined Instruction|
+|r2|r1|r22|r11|1|1|1|1|Move|
