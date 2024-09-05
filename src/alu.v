@@ -1,30 +1,9 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 06.09.2024 00:33:30
-// Design Name: 
-// Module Name: ALU
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
-`timescale 1ns / 1ps
 
 module alu(
   input wire [7:0] rs1, rs2,
   input wire [2:0] ctrl,
+  input wire Flag,
   output reg [7:0] out,
   output reg overflow
 );
@@ -45,10 +24,12 @@ module alu(
    always @(*) begin
     case(ctrl)
       3'b000: 
+      begin
         if (Flag == 1)
-            OutReg = ~(InReg1 & InReg2);  // NAND
+            out = ~(rs1 & rs2);  // NAND
         else 
-            OutReg = ~(InReg1 | InReg2);  // NOR
+            out = ~(rs1 | rs2);  // NOR
+           end
       3'b011: 
         if (Flag == 1)
         begin 
