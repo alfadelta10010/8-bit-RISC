@@ -2,6 +2,7 @@
 
 
 module adder_8(
+               input cin,
                input [7:0] A, B, 
                output [7:0] S, 
                output Cout
@@ -53,7 +54,7 @@ module adder_8(
   assign g4[6] = g3[6] | (p3[6] & g3[4]);
 
   // Step 3: Compute final carries
-  assign C[0] = 0;
+  assign C[0] = cin;
   assign C[1] = G[0];
   assign C[2] = g1[1];
   assign C[3] = g2[2];
@@ -64,6 +65,6 @@ module adder_8(
   assign Cout = g1[7];
 
   // Step 4: Sum computation
-  assign Sum = P ^ C;
+  assign S = P ^ C;
 
 endmodule
