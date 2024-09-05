@@ -1,71 +1,87 @@
-module decoder(instIn, opcode, rs1, rs2, instOut, fn);
+module decoder(instIn, opcode, rs1, rs2, fn);
   input logic [7:0] instIn;
   output logic [1:0] rs1;
   output logic [1:0] rs2;
-  output logic [7:0] instOut;
-  output logic [1:0] opcode;
-  output logic [1:0] fn;
+  output logic [2:0] opcode;
+  output logic [0:0] fn;
+  output logic [3:0] imm;
   always_comb
     begin
-      opcode = instIn[1:0];
-      instOut = instIn;
+      opcode = instIn[2:0];
       case(opcode)
-				2'b00: //Logic AND, OR, SRL, SLL
+        3'b000: // Logic NAND, NOR
           begin
             rs1 = {instIn[4], instIn[6]};
-						rs2 = {instIn[5], instIn[7]};
-            fn = {instIn[3], instIn[2]};
+            rs2 = {instIn[5], instIn[7]};
+            fn = instIn[3];
+            imm = 4'bX;
           end
-        2'b01: //Branches BLT and BEQ
+        3'b001: // Branches BLT
           begin
             rs1 = {1'b0, instIn[6]};
             rs2 = {1'b0, instIn[7]};
-            fn = {1'bX, instIn[2]};
-            //immediate = instIn[5:3];
+            fn = 1'bX;
+            imm = instIn[5:3];
           end
-				2'b10: //Load-Store-PCE??????
-           begin
-            fn = {1'bX, instIn[2]};
-            if (fn == 2'bX0)
-              begin
-                rs1 = {1'b0, instIn[7]};
-                rs2 = 2'bX;
-                //immediate = instIn[6:3];
-              end
-            else
-              begin
-                rs1 = {1'b0, instIn[6]};
-                rs2 = {1'b0, instIn[7]};
-                //immediate = instIn[5:3];
-              end
-            if (????) 
-              begin
-                rs1 = 2'bX;
-                rs2 = 2'bX;
-                //immediate = instIn[7:4];
-              end
-          end
-				2'b11: //Arithmetic-Jump-Halt
+        3'b101: // Branches BEQ
           begin
-            fn = instIn[3:2];
-            if (fn == 2'bX0)
-              begin
-                rs1 = {instIn[4], instIn[6]};
-						    rs2 = {instIn[5], instIn[7]};
-              end
-            else
+            rs1 = {1'b0, instIn[6]};
+            rs2 = {1'b0, instIn[7]};
+            fn = 1'bX;
+            imm = instIn[5:3];
+          end
+        3'b010: // Load
+          begin
+            fn = 1'bX;
+            rs1 = {1'b0, instIn[7]};
+            rs2 = 2'bX;
+            imm = instIn[6:3];
+          end
+        3'b010: // Store
+          begin
+            fn = 1'bX;
+            rs1 = {1'b0, instIn[6]};
+            rs2 = {1'b0, instIn[7]};
+            imm = instIn[5:3];
+          end
+        3'b011: // Arithmetic ADD SUB
+          begin
+            fn = instIn[3];
+            rs1 = {instIn[4], instIn[6]};
+            rs2 = {instIn[5], instIn[7]};
+            imm = 4'bX;
+          end
+        3'b100: // Logic SRL SLL
+          begin
+            fn = instIn[3];
+            rs1 = {instIn[4], instIn[6]};
+            rs2 = {instIn[5], instIn[7]};
+            imm = 4'bX;
+          end
+        3'b111: // Jump + New Inst
+          begin
+            fn = instIn[3];
+            if(fn == 1'b1) 
               begin
                 rs1 = 2'bX;
                 rs2 = 2'bX;
-                //immediate = instIn[7:4];
+                imm = instIn[7:4];
+              end
+            else
+              begin
+                // New instruction - undefined
+                rs1 = 2'bX;
+                rs2 = 2'bX;
+                imm = 4'bX;
               end
           end
         default:
           begin
-						rs1 = 2'bX;
-						rs2 = 2'bX;
-						fn = 2'bX;
-            end
+            rs1 = 2'bX;
+            rs2 = 2'bX;
+            fn = 1'bX;
+            imm = 4'bX;
+          end
       endcase
     end
 endmodule

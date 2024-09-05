@@ -4,18 +4,15 @@
 
 |r2|r1|r22|r12|F|F|Op|Code|Function|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|r2|r1|r22|r12|0|0|0|0|Logic AND|
-|r2|r1|r22|r12|0|1|0|0|Logic OR|
-|r2|r1|r22|r12|1|0|0|0|Logic SRL|
-|r2|r1|r22|r12|1|1|0|0|Logic SLL|
+|r2|r1|r22|r12|0|0|0|0|Logic NAND|
+|r2|r1|r22|r12|1|0|0|0|Logic NOR|
 |r2|r1|I|m|m|0|0|1|Branch BLT|
-|r2|r1|I|m|m|1|0|1|Branch BEQ|
 |r1|I|m|m|e|0|1|0|Load|
-|r2|r1|I|m|m|1|1|0|Store|
-|I|m|m|e|1|1|1|0|PCE|
 |r2|r1|r22|r12|0|0|1|1|Arithmetic ADD|
-|r2|r1|r22|r12|0|1|1|1|Arithmetic SUB|
-|I|m|m|e|1|0|1|1|Jump|
-|I|m|m|e|1|1|1|1|Halt|
-
-
+|r2|r1|r22|r12|1|0|1|1|Arithmetic SUB|
+|r2|r1|r22|r12|0|1|0|0|Logic SRL|
+|r2|r1|r22|r12|1|1|0|0|Logic SLL|
+|r2|r1|I|m|m|1|0|1|Branch BEQ|
+|r2|r1|I|m|m|1|1|0|Store|
+|I|m|m|e|0|1|1|1|Jump|
+|X|X|X|X|1|1|1|1|Undefined Instruction|
