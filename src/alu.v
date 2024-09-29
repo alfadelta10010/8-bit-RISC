@@ -14,10 +14,10 @@ module alu(
   wire add_overflow;
 
   adder_8 adder (
-    .cin(cin), 
+    .Cin(cin), 
     .A(a_temp), 
     .B(b_temp), 
-    .S(add_out), 
+    .Sum(add_out), 
     .Cout(add_overflow)
   );
 
